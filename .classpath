@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="json-20160810.jar"/>
+	<classpathentry kind="lib" path="appengine-api.jar"/>
+	<classpathentry kind="lib" path="appengine-gcs-client-0.7.jar"/>
+	<classpathentry kind="lib" path="commons-validator-1.6.jar"/>
+	<classpathentry kind="lib" path="servlet-api.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
