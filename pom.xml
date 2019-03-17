@@ -29,12 +29,18 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
+  <dependencies> 
   	<dependency>
 	    <groupId>com.google.appengine.tools</groupId>
 	    <artifactId>appengine-gcs-client</artifactId>
-	    <version>0.7</version>
-	</dependency>
+	    <version>0.8</version>
+	    <exclusions>
+	    	<exclusion>
+	    		<groupId>javax.servlet</groupId>
+	    		<artifactId>servlet-api</artifactId>
+	    	</exclusion>
+	    </exclusions>
+  	</dependency>
   	<dependency>
 		<groupId>com.google.appengine</groupId>
 		<artifactId>appengine-api-1.0-sdk</artifactId>
@@ -55,7 +61,7 @@
 	    <groupId>com.github.gasotelo</groupId>
 	    <artifactId>jCrystalJavaUtils</artifactId>
 	    <version>0.1.0</version>
-	</dependency>
+	</dependency> 
   </dependencies>
   <repositories>
 		<repository>
