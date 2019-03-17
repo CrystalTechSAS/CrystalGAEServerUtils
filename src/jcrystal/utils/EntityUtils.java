@@ -2,8 +2,6 @@ package jcrystal.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -81,6 +79,7 @@ public class EntityUtils {
 			if(t instanceof Integer)return ((Integer)t).longValue();
 			return (Long)t;
 	}
+	@SuppressWarnings("unchecked")
 	public static <T> List<T> getList(Entity ent, String key){
 		final Object t = ent.getProperty(key+".size");
 		if(t==null || !(t instanceof Long))
