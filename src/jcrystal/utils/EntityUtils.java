@@ -48,15 +48,21 @@ public class EntityUtils {
 	public static int getInt(Entity ent, String key, int defaultValue){
 		Object t = ent.getProperty(key);
 		if(t==null)return defaultValue;
-			if(t instanceof Long)
+		if(t instanceof Long)
 			return ((Long)t).intValue();
 		return (Integer)t;
 	}
 	public static double getDouble(Entity ent, String key, double defaultValue){
 		Object t = ent.getProperty(key);
 		if(t==null)return defaultValue;
-			if(t instanceof Float)
+		if(t instanceof Double)
+			return (double)t;
+		if(t instanceof Float)
 			return ((Float)t).doubleValue();
+		if(t instanceof Long)
+			return ((Long)t).doubleValue();
+		if(t instanceof Integer)
+			return ((Integer)t).doubleValue();
 		return (double)t;
 	}
 	public static int getInt(Entity ent, String key){
