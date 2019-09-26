@@ -56,7 +56,7 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 		com.google.appengine.api.datastore.PreparedQuery _pq = jcrystal.context.CrystalContext.get().datastore.prepare($txn, q);
 		for(com.google.appengine.api.datastore.Entity ent : fetchOptions==null?_pq.asIterable():_pq.asIterable(fetchOptions)){
 			Q $nuevo = create(ent);
-			if(filtro.test($nuevo)){
+			if(filtro==null || filtro.test($nuevo)){
 				ret.add($nuevo);
 			}
 		}
