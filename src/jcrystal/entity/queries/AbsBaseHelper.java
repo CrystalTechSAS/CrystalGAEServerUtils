@@ -9,12 +9,18 @@ import java.util.function.Predicate;
 
 import com.google.appengine.api.datastore.Entity;
 
+import jcrystal.context.DataStoreContext;
+
 public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 	protected com.google.appengine.api.datastore.FetchOptions fetchOptions;
 	protected com.google.appengine.api.datastore.Transaction $txn = null;
+	protected DataStoreContext dsContext;
 	final T t;
 	@SuppressWarnings("unchecked")
-	protected AbsBaseHelper(){t = (T)this;}
+	protected AbsBaseHelper(DataStoreContext dsContext){
+		t = (T)this;
+		this.dsContext = dsContext;
+	}
 	
 	public T limit(int limit){
 		if(fetchOptions == null && $txn == null){
@@ -30,11 +36,11 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 	public T txn(){
 		if(fetchOptions == null && $txn == null){
 			T ret = create();
-			ret.$txn = jcrystal.context.CrystalContext.get().getTxn();
+			ret.$txn = dsContext.getTxn();
 			return ret;
 		}
 		else{
-			t.$txn = jcrystal.context.CrystalContext.get().getTxn();
+			t.$txn = dsContext.getTxn();
 			return t;
 		}
 	}
@@ -53,7 +59,7 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 	public abstract Q create(Entity entidad);
 	protected java.util.List<Q> processQuery(com.google.appengine.api.datastore.Query q, Predicate<Q> filtro){
 		java.util.List<Q> ret = new java.util.ArrayList<>();
-		com.google.appengine.api.datastore.PreparedQuery _pq = jcrystal.context.CrystalContext.get().datastore.prepare($txn, q);
+		com.google.appengine.api.datastore.PreparedQuery _pq = dsContext.service.prepare($txn, q);
 		for(com.google.appengine.api.datastore.Entity ent : fetchOptions==null?_pq.asIterable():_pq.asIterable(fetchOptions)){
 			Q $nuevo = create(ent);
 			if(filtro==null || filtro.test($nuevo)){
@@ -64,19 +70,19 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 	}
 	protected java.util.List<Q> processQuery(com.google.appengine.api.datastore.Query q){
 		java.util.List<Q> ret = new java.util.ArrayList<>();
-		com.google.appengine.api.datastore.PreparedQuery _pq = jcrystal.context.CrystalContext.get().datastore.prepare($txn, q);
+		com.google.appengine.api.datastore.PreparedQuery _pq = dsContext.service.prepare($txn, q);
 		for(com.google.appengine.api.datastore.Entity ent : fetchOptions==null?_pq.asIterable():_pq.asIterable(fetchOptions))
 		ret.add(create(ent));
 		return ret;
 	}
 	protected Q processQueryUnique(com.google.appengine.api.datastore.Query q){
-		com.google.appengine.api.datastore.PreparedQuery _pq = jcrystal.context.CrystalContext.get().datastore.prepare($txn, q);
+		com.google.appengine.api.datastore.PreparedQuery _pq = dsContext.service.prepare($txn, q);
 		for(com.google.appengine.api.datastore.Entity ent : fetchOptions==null?_pq.asIterable():_pq.asIterable(fetchOptions))
 		return create(ent);
 		return null;
 	}
 	protected Q processQueryUnique(com.google.appengine.api.datastore.Query q, Predicate<Q> filtro){
-		com.google.appengine.api.datastore.PreparedQuery _pq = jcrystal.context.CrystalContext.get().datastore.prepare($txn, q);
+		com.google.appengine.api.datastore.PreparedQuery _pq = dsContext.service.prepare($txn, q);
 		for(com.google.appengine.api.datastore.Entity ent : fetchOptions==null?_pq.asIterable():_pq.asIterable(fetchOptions)) {
 			Q $nuevo = create(ent);
 			if(filtro == null || filtro.test($nuevo)){

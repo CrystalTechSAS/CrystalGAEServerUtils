@@ -16,13 +16,13 @@ public final class SingleCallWSEntity {
 		return rawEntity.getKey().getName();
 	}
 	public SingleCallWSEntity put(){
-		jcrystal.context.CrystalContext.get().datastore.put(null, rawEntity);
+		com.google.appengine.api.datastore.DatastoreServiceFactory.getDatastoreService().put(null, rawEntity);
 		return this;
 	}
 	private static com.google.appengine.api.datastore.Entity rawGet(String path){
 		if(null == path){return null;}
 		try{
-			return jcrystal.context.CrystalContext.get().datastore.get(null, com.google.appengine.api.datastore.KeyFactory.createKey(ENTITY_NAME, path));
+			return com.google.appengine.api.datastore.DatastoreServiceFactory.getDatastoreService().get(null, com.google.appengine.api.datastore.KeyFactory.createKey(ENTITY_NAME, path));
 		}
 		catch(com.google.appengine.api.datastore.EntityNotFoundException | java.lang.IllegalArgumentException e){
 			return null;
