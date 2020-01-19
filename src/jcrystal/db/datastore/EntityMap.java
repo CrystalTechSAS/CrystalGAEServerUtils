@@ -15,6 +15,9 @@ public class EntityMap<T> implements Map<String, T>{
 		else
 			this.rawEntity = new Entity("Map");
 	}
+	public Entity getRawMap() {
+		return rawEntity;
+	}
 	public EntityMap(Map<String, T> map) {
 		this.rawEntity = new Entity("Map");
 		putAll(map);
