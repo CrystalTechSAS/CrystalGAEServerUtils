@@ -4,27 +4,27 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EmbeddedEntity;
 
 @SuppressWarnings({"rawtypes","unchecked"})
 public class EntityMap<T> implements Map<String, T>{
-	private Entity rawEntity;
-	public EntityMap(Entity rawEntity) {
+	private EmbeddedEntity rawEntity;
+	public EntityMap(EmbeddedEntity rawEntity) {
 		if(rawEntity != null)
 			this.rawEntity = rawEntity;
 		else
-			this.rawEntity = new Entity("Map");
+			this.rawEntity = new EmbeddedEntity();
 	}
-	public Entity getRawMap() {
+	public EmbeddedEntity getRawMap() {
 		return rawEntity;
 	}
 	public EntityMap(Map<String, T> map) {
-		this.rawEntity = new Entity("Map");
+		this.rawEntity = new EmbeddedEntity();
 		putAll(map);
 	}
 	@Override
 	public void clear() {
-		rawEntity = new Entity("Map");
+		rawEntity = new EmbeddedEntity();
 	}
 	@Override
 	public boolean containsKey(Object arg0) {
