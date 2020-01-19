@@ -3,11 +3,12 @@
  * Proprietary and confidential
  * Written by Germán Augusto Sotelo Arévalo <gasotelo@crystaltech.co>, December 2018
  */
-package jcrystal.utils;
+package jcrystal.db.datastore;
 
 import java.util.Arrays;
 
 import jcrystal.context.DataStoreContext;
+import jcrystal.utils.IterableTransform;
 
 public class EntityBatch {
 	public static void put(DataStoreContext dsContext, IEntity...ents){

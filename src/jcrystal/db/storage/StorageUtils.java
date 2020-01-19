@@ -3,7 +3,7 @@
  * Proprietary and confidential
  * Written by Germán Augusto Sotelo Arévalo <gasotelo@crystaltech.co.com>, December 2018
  */
-package jcrystal.server;
+package jcrystal.db.storage;
 
 public class StorageUtils {
 	static String DEFAULT_BUCKET;

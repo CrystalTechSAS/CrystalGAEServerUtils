@@ -33,7 +33,7 @@ public final class SingleCallWSEntity {
 		return this;
 	}
 	public long version(){
-		return jcrystal.utils.EntityUtils.getLong(rawEntity, "version");
+		return jcrystal.db.datastore.EntityUtils.getLong(rawEntity, "version");
 	}
 	public static SingleCallWSEntity get(String path){
 		com.google.appengine.api.datastore.Entity ent = rawGet(path);

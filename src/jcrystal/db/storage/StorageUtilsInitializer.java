@@ -3,7 +3,7 @@
  * Proprietary and confidential
  * Written by Germán Augusto Sotelo Arévalo <gasotelo@crystaltech.co>, December 2018
  */
-package jcrystal.server;
+package jcrystal.db.storage;
 
 import com.google.appengine.api.appidentity.AppIdentityServiceFactory;
 

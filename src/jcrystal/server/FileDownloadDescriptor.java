@@ -1,5 +1,7 @@
 package jcrystal.server;
 
+import jcrystal.db.storage.StorageUtils;
+
 public class FileDownloadDescriptor {
 
 	public final String bucketName;

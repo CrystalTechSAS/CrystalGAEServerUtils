@@ -3,7 +3,7 @@
  * Proprietary and confidential
  * Written by Germán Augusto Sotelo Arévalo <gasotelo@crystaltech.co>, December 2018
  */
-package jcrystal.utils;
+package jcrystal.db.datastore;
 
 import java.util.ArrayList;
 import java.util.List;

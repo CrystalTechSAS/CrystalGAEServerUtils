@@ -3,7 +3,7 @@
  * Proprietary and confidential
  * Written by Germán Augusto Sotelo Arévalo <gasotelo@crystaltech.co>, December 2018
  */
-package jcrystal.entity.queries;
+package jcrystal.db.datastore.query;
 
 import java.util.function.Predicate;
 
