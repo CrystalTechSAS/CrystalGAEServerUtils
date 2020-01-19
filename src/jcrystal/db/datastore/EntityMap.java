@@ -7,10 +7,17 @@ import java.util.Set;
 import com.google.appengine.api.datastore.Entity;
 
 @SuppressWarnings({"rawtypes","unchecked"})
-public class EntitySet<T> implements Map<String, T>{
+public class EntityMap<T> implements Map<String, T>{
 	private Entity rawEntity;
-	public EntitySet(Entity rawEntity) {
-		this.rawEntity = rawEntity;
+	public EntityMap(Entity rawEntity) {
+		if(rawEntity != null)
+			this.rawEntity = rawEntity;
+		else
+			this.rawEntity = new Entity("Map");
+	}
+	public EntityMap(Map<String, T> map) {
+		this.rawEntity = new Entity("Map");
+		putAll(map);
 	}
 	@Override
 	public void clear() {
