@@ -5,26 +5,31 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.appengine.api.datastore.EmbeddedEntity;
+import com.google.appengine.api.datastore.Entity;
 
 @SuppressWarnings({"rawtypes","unchecked"})
 public class EntityMap<T> implements Map<String, T>{
 	private EmbeddedEntity rawEntity;
-	public EntityMap(EmbeddedEntity rawEntity) {
-		if(rawEntity != null)
-			this.rawEntity = rawEntity;
-		else
-			this.rawEntity = new EmbeddedEntity();
+	private Entity parentEntity;
+	private String propertyName;
+	public EntityMap(Entity parentEntity, String propertyName) {
+		this.parentEntity = parentEntity;
+		this.propertyName = propertyName;
+		if(parentEntity.hasProperty(propertyName))
+			this.rawEntity = (EmbeddedEntity)parentEntity.getProperty(propertyName);
+		else 
+			parentEntity.setUnindexedProperty(propertyName, this.rawEntity = new EmbeddedEntity());
 	}
 	public EmbeddedEntity getRawMap() {
 		return rawEntity;
 	}
-	public EntityMap(Map<String, T> map) {
-		this.rawEntity = new EmbeddedEntity();
+	public EntityMap(Entity parentEntity, String propertyName, Map<String, T> map) {
+		parentEntity.setUnindexedProperty(propertyName, this.rawEntity = new EmbeddedEntity());
 		putAll(map);
 	}
 	@Override
 	public void clear() {
-		rawEntity = new EmbeddedEntity();
+		parentEntity.setUnindexedProperty(propertyName, this.rawEntity = new EmbeddedEntity());
 	}
 	@Override
 	public boolean containsKey(Object arg0) {
