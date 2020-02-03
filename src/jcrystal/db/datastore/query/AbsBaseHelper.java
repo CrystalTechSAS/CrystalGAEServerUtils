@@ -14,6 +14,8 @@ import jcrystal.context.DataStoreContext;
 public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 	protected com.google.appengine.api.datastore.FetchOptions fetchOptions;
 	protected com.google.appengine.api.datastore.Transaction $txn = null;
+	protected com.google.appengine.api.datastore.Key ancestor;
+	boolean custom = false;
 	protected DataStoreContext dsContext;
 	final T t;
 	@SuppressWarnings("unchecked")
@@ -21,39 +23,40 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 		t = (T)this;
 		this.dsContext = dsContext;
 	}
-	
-	public T limit(int limit){
-		if(fetchOptions == null && $txn == null){
+	private T createCustomInstance() {
+		if(custom)
+			return t;
+		else{
 			T ret = create();
-			ret.fetchOptions = com.google.appengine.api.datastore.FetchOptions.Builder.withLimit(limit);
+			ret.custom = true;
 			return ret;
 		}
-		else{
-			fetchOptions = fetchOptions.limit(limit);
-			return t;
-		}
+	}
+	public T ancestor(com.google.appengine.api.datastore.Key ancestor){
+		T ret = createCustomInstance();
+		ret.ancestor = ancestor;
+		return ret;
+	}
+	public T limit(int limit){
+		T ret = createCustomInstance();
+		if(ret.fetchOptions == null)
+			ret.fetchOptions = com.google.appengine.api.datastore.FetchOptions.Builder.withLimit(limit);
+		else
+			ret.fetchOptions = ret.fetchOptions.limit(limit);
+		return ret;
 	}
 	public T txn(){
-		if(fetchOptions == null && $txn == null){
-			T ret = create();
-			ret.$txn = dsContext.getTxn();
-			return ret;
-		}
-		else{
-			t.$txn = dsContext.getTxn();
-			return t;
-		}
+		T ret = createCustomInstance();
+		ret.$txn = dsContext.getTxn();
+		return ret;
 	}
 	public T chunkSize(int chunkSize){
-		if(fetchOptions == null && $txn == null){
-			T ret = create();
+		T ret = createCustomInstance();
+		if(ret.fetchOptions == null)
 			ret.fetchOptions = com.google.appengine.api.datastore.FetchOptions.Builder.withChunkSize(chunkSize);
-			return ret;
-		}
-		else{
-			fetchOptions = fetchOptions.chunkSize(chunkSize);
-			return t;
-		}
+		else
+			ret.fetchOptions = ret.fetchOptions.chunkSize(chunkSize);
+		return ret;
 	}
 	public abstract T create();
 	public abstract Q create(Entity entidad);
