@@ -11,48 +11,48 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PropertyContainer;
 import com.google.appengine.api.datastore.Text;
 
 public class EntityUtils {
-	public static JSONArray getJsonArray(Entity ent, String key) {
+	public static JSONArray getJsonArray(PropertyContainer ent, String key) {
 		String temp = getString(ent, key);
 		if(temp == null)
 			return null;
 		return new JSONArray(temp);
 	}
-	public static JSONObject getJsonObject(Entity ent, String key) {
+	public static JSONObject getJsonObject(PropertyContainer ent, String key) {
 		String temp = getString(ent, key);
 		if(temp == null)
 			return null;
 		return new JSONObject(temp);
 	}
-	public static String getString(Entity ent, String key){
+	public static String getString(PropertyContainer ent, String key){
 		Object t = ent.getProperty(key);
 		if(t==null)return null;
 			if(t instanceof Text)
 			return ((Text)t).getValue();
 		return (String)t;
 	}
-	public static boolean getBool(Entity ent, String key){
+	public static boolean getBool(PropertyContainer ent, String key){
 		Object t = ent.getProperty(key);
 		if(t==null)return false;
 			return (Boolean)t;
 	}
-	public static boolean getBool(Entity ent, String key, boolean defaultValue){
+	public static boolean getBool(PropertyContainer ent, String key, boolean defaultValue){
 		Object t = ent.getProperty(key);
 		if(t==null)return defaultValue;
 			return (Boolean)t;
 	}
 	
-	public static int getInt(Entity ent, String key, int defaultValue){
+	public static int getInt(PropertyContainer ent, String key, int defaultValue){
 		Object t = ent.getProperty(key);
 		if(t==null)return defaultValue;
 		if(t instanceof Long)
 			return ((Long)t).intValue();
 		return (Integer)t;
 	}
-	public static double getDouble(Entity ent, String key, double defaultValue){
+	public static double getDouble(PropertyContainer ent, String key, double defaultValue){
 		Object t = ent.getProperty(key);
 		if(t==null)return defaultValue;
 		if(t instanceof Double)
@@ -65,33 +65,33 @@ public class EntityUtils {
 			return ((Integer)t).doubleValue();
 		return (double)t;
 	}
-	public static int getInt(Entity ent, String key){
+	public static int getInt(PropertyContainer ent, String key){
 		Object t = ent.getProperty(key);
 		if(t==null)return 0;
 			if(t instanceof Long)
 			return ((Long)t).intValue();
 		return (Integer)t;
 	}
-	public static Integer getInteger(Entity ent, String key){
+	public static Integer getInteger(PropertyContainer ent, String key){
 		Object t = ent.getProperty(key);
 		if(t==null)return null;
 			if(t instanceof Long)return ((Long)t).intValue();
 			return (Integer)t;
 	}
-	public static long getLong(Entity ent, String key){
+	public static long getLong(PropertyContainer ent, String key){
 		Object t = ent.getProperty(key);
 		if(t==null)return 0;
 			if(t instanceof Integer)return ((Integer)t).longValue();
 			return (Long)t;
 	}
-	public static Long getLongObj(Entity ent, String key){
+	public static Long getLongObj(PropertyContainer ent, String key){
 		Object t = ent.getProperty(key);
 		if(t==null)return null;
 			if(t instanceof Integer)return ((Integer)t).longValue();
 			return (Long)t;
 	}
 	@SuppressWarnings("unchecked")
-	public static <T> List<T> getList(Entity ent, String key){
+	public static <T> List<T> getList(PropertyContainer ent, String key){
 		final Object t = ent.getProperty(key+".size");
 		if(t==null || !(t instanceof Long))
 			return new ArrayList<>(0);
