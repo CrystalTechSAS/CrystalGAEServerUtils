@@ -8,6 +8,7 @@ package jcrystal.db.datastore.query;
 import java.util.function.Predicate;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Query;
 
 import jcrystal.context.DataStoreContext;
 
@@ -56,6 +57,12 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 			ret.fetchOptions = com.google.appengine.api.datastore.FetchOptions.Builder.withChunkSize(chunkSize);
 		else
 			ret.fetchOptions = ret.fetchOptions.chunkSize(chunkSize);
+		return ret;
+	}
+	public com.google.appengine.api.datastore.Query createWithOptions(String kind){
+		com.google.appengine.api.datastore.Query ret = new Query(kind);
+		if(ancestor != null)
+			ret.setAncestor(ancestor);
 		return ret;
 	}
 	public abstract T create();
