@@ -59,11 +59,14 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 			ret.fetchOptions = ret.fetchOptions.chunkSize(chunkSize);
 		return ret;
 	}
-	public com.google.appengine.api.datastore.Query createWithOptions(String kind){
-		com.google.appengine.api.datastore.Query ret = new Query(kind);
-		if(ancestor != null)
-			ret.setAncestor(ancestor);
-		return ret;
+	public com.google.appengine.api.datastore.Query createQuery(String kind){
+		if(custom) {
+			com.google.appengine.api.datastore.Query ret = new Query(kind);
+			if(ancestor != null)
+				ret.setAncestor(ancestor);
+			return ret;
+		}
+		return new Query(kind);
 	}
 	public abstract T create();
 	public abstract Q create(Entity entidad);
