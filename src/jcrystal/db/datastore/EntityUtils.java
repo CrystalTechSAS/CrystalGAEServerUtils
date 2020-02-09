@@ -34,12 +34,12 @@ public class EntityUtils {
 			return ((Text)t).getValue();
 		return (String)t;
 	}
-	public static boolean getBool(PropertyContainer ent, String key){
+	public static boolean getBoolean(PropertyContainer ent, String key){
 		Object t = ent.getProperty(key);
 		if(t==null)return false;
 			return (Boolean)t;
 	}
-	public static boolean getBool(PropertyContainer ent, String key, boolean defaultValue){
+	public static boolean getBoolean(PropertyContainer ent, String key, boolean defaultValue){
 		Object t = ent.getProperty(key);
 		if(t==null)return defaultValue;
 			return (Boolean)t;
@@ -83,6 +83,13 @@ public class EntityUtils {
 		if(t==null)return 0;
 			if(t instanceof Integer)return ((Integer)t).longValue();
 			return (Long)t;
+	}
+	public static long getLong(PropertyContainer ent, String key, long defaultValue){
+		Object t = ent.getProperty(key);
+		if(t==null)return defaultValue;
+		if(t instanceof Integer)return ((Integer)t).longValue();
+		if(t instanceof Long)return ((Long)t).longValue();
+		return defaultValue;
 	}
 	public static Long getLongObj(PropertyContainer ent, String key){
 		Object t = ent.getProperty(key);
