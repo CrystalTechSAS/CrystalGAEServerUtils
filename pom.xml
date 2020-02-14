@@ -61,7 +61,7 @@
     <dependency>
 	    <groupId>com.github.gasotelo</groupId>
 	    <artifactId>jCrystalJavaUtils</artifactId>
-	    <version>3f2d0b4f78</version>
+	    <version>bdabe7a061</version>
 	</dependency> 
   </dependencies>
   <repositories>
