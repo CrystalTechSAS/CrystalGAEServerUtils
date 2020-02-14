@@ -5,16 +5,13 @@
  */
 package jcrystal.db.storage;
 
+import com.google.appengine.api.appidentity.AppIdentityServiceFactory;
+
 public class StorageUtils {
 	static String DEFAULT_BUCKET;
 	public static String getDEFAULT_BUCKET() {
 		if(DEFAULT_BUCKET == null) {
-			try {
-				Class<?> c = Class.forName("jcrystal.server.StorageUtilsInitializer");
-				c.getMethod("init").invoke(null);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			DEFAULT_BUCKET = AppIdentityServiceFactory.getAppIdentityService().getDefaultGcsBucketName();
 		}
 		return DEFAULT_BUCKET;
 	}
