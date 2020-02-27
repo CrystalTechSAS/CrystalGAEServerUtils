@@ -16,6 +16,7 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 	protected com.google.appengine.api.datastore.FetchOptions fetchOptions;
 	protected com.google.appengine.api.datastore.Transaction $txn = null;
 	protected com.google.appengine.api.datastore.Key ancestor;
+	protected Predicate<Q> filter;
 	boolean custom = false;
 	protected DataStoreContext dsContext;
 	final T t;
@@ -46,6 +47,11 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 			ret.fetchOptions = ret.fetchOptions.limit(limit);
 		return ret;
 	}
+	public T filter(Predicate<Q> filter){
+		T ret = createCustomInstance();
+		ret.filter = filter;
+		return ret;
+	}
 	public T txn(){
 		T ret = createCustomInstance();
 		ret.$txn = dsContext.getTxn();
@@ -70,35 +76,22 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 	}
 	public abstract T create();
 	public abstract Q create(Entity entidad);
-	protected java.util.List<Q> processQuery(com.google.appengine.api.datastore.Query q, Predicate<Q> filtro){
+	protected java.util.List<Q> processQuery(com.google.appengine.api.datastore.Query q){
 		java.util.List<Q> ret = new java.util.ArrayList<>();
 		com.google.appengine.api.datastore.PreparedQuery _pq = dsContext.service.prepare($txn, q);
 		for(com.google.appengine.api.datastore.Entity ent : fetchOptions==null?_pq.asIterable():_pq.asIterable(fetchOptions)){
 			Q $nuevo = create(ent);
-			if(filtro==null || filtro.test($nuevo)){
+			if(filter == null || filter.test($nuevo)){
 				ret.add($nuevo);
 			}
 		}
 		return ret;
 	}
-	protected java.util.List<Q> processQuery(com.google.appengine.api.datastore.Query q){
-		java.util.List<Q> ret = new java.util.ArrayList<>();
-		com.google.appengine.api.datastore.PreparedQuery _pq = dsContext.service.prepare($txn, q);
-		for(com.google.appengine.api.datastore.Entity ent : fetchOptions==null?_pq.asIterable():_pq.asIterable(fetchOptions))
-		ret.add(create(ent));
-		return ret;
-	}
 	protected Q processQueryUnique(com.google.appengine.api.datastore.Query q){
-		com.google.appengine.api.datastore.PreparedQuery _pq = dsContext.service.prepare($txn, q);
-		for(com.google.appengine.api.datastore.Entity ent : fetchOptions==null?_pq.asIterable():_pq.asIterable(fetchOptions))
-		return create(ent);
-		return null;
-	}
-	protected Q processQueryUnique(com.google.appengine.api.datastore.Query q, Predicate<Q> filtro){
 		com.google.appengine.api.datastore.PreparedQuery _pq = dsContext.service.prepare($txn, q);
 		for(com.google.appengine.api.datastore.Entity ent : fetchOptions==null?_pq.asIterable():_pq.asIterable(fetchOptions)) {
 			Q $nuevo = create(ent);
-			if(filtro == null || filtro.test($nuevo)){
+			if(filter == null || filter.test($nuevo)){
 				return $nuevo;
 			}
 		}
