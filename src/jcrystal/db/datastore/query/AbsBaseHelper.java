@@ -25,6 +25,11 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 		t = (T)this;
 		this.dsContext = dsContext;
 	}
+	protected AbsBaseHelper(DataStoreContext dsContext, com.google.appengine.api.datastore.Key ancestor){
+		this(dsContext);
+		this.ancestor = ancestor;
+		this.custom = true;
+	}
 	private T createCustomInstance() {
 		if(custom)
 			return t;
