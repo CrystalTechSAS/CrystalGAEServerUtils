@@ -14,7 +14,7 @@ public class DataStoreContext {
 	public final com.google.appengine.api.datastore.DatastoreService service = com.google.appengine.api.datastore.DatastoreServiceFactory.getDatastoreService();
 	private com.google.appengine.api.datastore.Transaction txn;
 	
-	public final com.google.appengine.api.datastore.Transaction getTxn(){
+	private final com.google.appengine.api.datastore.Transaction getTxn(){
 		if(txn == null)
 			txn = service.beginTransaction(TransactionOptions.Builder.withXG(true));
 		return txn;
@@ -44,6 +44,7 @@ public class DataStoreContext {
 		service.delete(txn, keys);
 	}
 	public final void withinTxn(int retries, int delta, Runnable run){
+		getTxn();
 		for(int e = 0; e < retries; e++){
 			try {
 				run.run();
