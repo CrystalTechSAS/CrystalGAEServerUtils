@@ -14,9 +14,7 @@ public class DataStoreContext {
 	public final com.google.appengine.api.datastore.DatastoreService service = com.google.appengine.api.datastore.DatastoreServiceFactory.getDatastoreService();
 	private com.google.appengine.api.datastore.Transaction txn;
 	
-	private final com.google.appengine.api.datastore.Transaction getTxn(){
-		if(txn == null)
-			txn = service.beginTransaction(TransactionOptions.Builder.withXG(true));
+	public final com.google.appengine.api.datastore.Transaction getTxn(){
 		return txn;
 	}
 	public final Entity get(Key key) throws EntityNotFoundException {
@@ -44,7 +42,7 @@ public class DataStoreContext {
 		service.delete(txn, keys);
 	}
 	public final void withinTxn(int retries, int delta, Runnable run){
-		getTxn();
+		txn = service.beginTransaction(TransactionOptions.Builder.withXG(true));
 		for(int e = 0; e < retries; e++){
 			try {
 				run.run();
