@@ -5,6 +5,8 @@
  */
 package jcrystal.context;
 
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.TransactionOptions;
 
@@ -16,6 +18,15 @@ public class DataStoreContext {
 		if(txn == null)
 			txn = service.beginTransaction(TransactionOptions.Builder.withXG(true));
 		return txn;
+	}
+	public final Entity get(Key key) throws EntityNotFoundException {
+		return service.get(txn, key);
+	}
+	public final void withoutTxn(Runnable r) throws EntityNotFoundException {
+		com.google.appengine.api.datastore.Transaction prev = txn;
+		txn = null;
+		r.run();
+		txn = prev;
 	}
 	public final void endTx(){
 		if(txn != null)
