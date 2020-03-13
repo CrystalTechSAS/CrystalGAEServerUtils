@@ -7,10 +7,14 @@ package jcrystal.db.datastore.query;
 
 import java.util.function.Predicate;
 
+import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.QueryResultIterable;
+import com.google.appengine.api.datastore.QueryResultList;
 
 import jcrystal.context.DataStoreContext;
+import jcrystal.db.query.Page;
 
 public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 	protected com.google.appengine.api.datastore.FetchOptions fetchOptions;
@@ -62,6 +66,14 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 		ret.$txn = dsContext.getTxn();
 		return ret;
 	}
+	public T cursor(String cursor){
+		T ret = createCustomInstance();
+		if(ret.fetchOptions == null)
+			ret.fetchOptions = com.google.appengine.api.datastore.FetchOptions.Builder.withStartCursor(Cursor.fromWebSafeString(cursor));
+		else
+			ret.fetchOptions = ret.fetchOptions.startCursor(Cursor.fromWebSafeString(cursor));
+		return ret;
+	}
 	public T chunkSize(int chunkSize){
 		T ret = createCustomInstance();
 		if(ret.fetchOptions == null)
@@ -90,6 +102,18 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 				ret.add($nuevo);
 			}
 		}
+		return ret;
+	}
+	public java.util.List<Q> fill(Page<Q> page){
+		java.util.List<Q> ret = new java.util.ArrayList<>();
+		com.google.appengine.api.datastore.PreparedQuery _pq = dsContext.service.prepare($txn, page.getQuery());
+		QueryResultList<Entity> _data = _pq.asQueryResultList(fetchOptions);
+		for(com.google.appengine.api.datastore.Entity ent : _data){
+			Q $nuevo = create(ent);
+			if(filter == null || filter.test($nuevo))
+				ret.add($nuevo);
+		}
+		page.setNewCursor(_data.getCursor().toWebSafeString());
 		return ret;
 	}
 	protected Q processQueryUnique(com.google.appengine.api.datastore.Query q){
