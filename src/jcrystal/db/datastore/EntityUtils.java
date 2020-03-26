@@ -11,6 +11,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.datastore.PropertyContainer;
 import com.google.appengine.api.datastore.Text;
 
@@ -32,6 +33,14 @@ public class EntityUtils {
 		if(t==null)return null;
 			if(t instanceof Text)
 			return ((Text)t).getValue();
+		return (String)t;
+	}
+	public static String getEmail(PropertyContainer ent, String key){
+		Object t = ent.getProperty(key);
+		if(t==null)
+			return null;
+		if(t instanceof Email)
+			return ((Email)t).getEmail();
 		return (String)t;
 	}
 	public static boolean getBoolean(PropertyContainer ent, String key){
