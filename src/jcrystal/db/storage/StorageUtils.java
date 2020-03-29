@@ -6,6 +6,7 @@
 package jcrystal.db.storage;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,9 +32,17 @@ public class StorageUtils {
 		if(meta != null) {
 			GcsFileOptions options = meta.getOptions();
 			if(meta != null) {
-				if(options.getMimeType() != null)
+				String mimetype = options.getMimeType(); 
+				if(mimetype != null)
 					resp.setContentType(options.getMimeType());
-				if(options.getContentDisposition() != null)
+				Map<String, String> metadata = options.getUserMetadata(); 
+				if(metadata != null && metadata.get("filename") != null) {
+					if(mimetype == null)
+						resp.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", metadata.get("filename")));
+					else if(mimetype.startsWith("image/") || mimetype.startsWith("text/") || mimetype.startsWith("video/") || mimetype.equals("application/pdf"))
+						resp.setHeader("Content-Disposition", String.format("filename=\"%s\"", metadata.get("filename")));
+				}
+				else if(options.getContentDisposition() != null)
 					resp.setHeader("Content-Disposition", options.getContentDisposition());
 			}
 		}
