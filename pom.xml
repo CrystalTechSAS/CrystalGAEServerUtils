@@ -59,7 +59,7 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-	    <groupId>com.github.gasotelo</groupId>
+		<groupId>com.github.CrystalTechSAS</groupId>
 	    <artifactId>jCrystalJavaUtils</artifactId>
 	    <version>1.1.0</version>
 	</dependency> 
