@@ -59,9 +59,10 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-	    <groupId>com.github.gasotelo</groupId>
+	    <groupId>com.github.CrystalTechSAS</groupId>
 	    <artifactId>jCrystalJavaUtils</artifactId>
 	    <version>5e4a63a4b5a355e3c9ad47683b51094d214361c9</version>
+	    <scope>provided</scope>
 	</dependency> 
   </dependencies>
   <repositories>
