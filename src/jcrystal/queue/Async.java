@@ -22,7 +22,7 @@ public class Async {
 		try(ObjectOutputStream oos = new ObjectOutputStream(baos)){
 			oos.writeObject(task);
 		}catch (Exception e) {
-			throw new InternalException(500, e.getMessage());
+			throw new InternalException(500, "Can't add task to jCrystal Queue.", e);
 		}
 		$task=$task.payload(baos.toByteArray());
 		queue.add(null, $task);
