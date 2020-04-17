@@ -10,7 +10,6 @@ import java.util.function.Predicate;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.QueryResultIterable;
 import com.google.appengine.api.datastore.QueryResultList;
 
 import jcrystal.context.DataStoreContext;
@@ -113,7 +112,8 @@ public abstract class AbsBaseHelper <T extends AbsBaseHelper<T,Q>, Q>{
 			if(filter == null || filter.test($nuevo))
 				ret.add($nuevo);
 		}
-		page.setNewCursor(_data.getCursor().toWebSafeString());
+		if(!ret.isEmpty())
+			page.setNewCursor(_data.getCursor().toWebSafeString());
 		return ret;
 	}
 	protected Q processQueryUnique(com.google.appengine.api.datastore.Query q){
