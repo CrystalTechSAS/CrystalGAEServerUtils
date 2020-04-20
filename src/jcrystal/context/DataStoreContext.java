@@ -12,37 +12,37 @@ import com.google.appengine.api.datastore.TransactionOptions;
 
 public class DataStoreContext {
 	public final com.google.appengine.api.datastore.DatastoreService service = com.google.appengine.api.datastore.DatastoreServiceFactory.getDatastoreService();
-	private com.google.appengine.api.datastore.Transaction txn;
+	private com.google.appengine.api.datastore.Transaction transaction;
 	
 	public final com.google.appengine.api.datastore.Transaction getTxn(){
-		return txn;
+		return transaction;
 	}
 	public final Entity get(Key key) throws EntityNotFoundException {
-		return service.get(txn, key);
+		return service.get(transaction, key);
 	}
 	public final void withoutTxn(Runnable r) throws EntityNotFoundException {
-		com.google.appengine.api.datastore.Transaction prev = txn;
-		txn = null;
+		com.google.appengine.api.datastore.Transaction prev = transaction;
+		transaction = null;
 		r.run();
-		txn = prev;
+		transaction = prev;
 	}
 	public final void endTx(){
-		if(txn != null)
-			txn.commit();
+		if(transaction != null)
+			transaction.commit();
 	}
 	public final boolean rollbackTx(){
-		if(txn != null && txn.isActive()) {
-			txn.rollback();
+		if(transaction != null && transaction.isActive()) {
+			transaction.rollback();
 			return false;
 		}
-		txn = null;
+		transaction = null;
 		return true;
 	}
 	public final void delete(Key...keys){
-		service.delete(txn, keys);
+		service.delete(transaction, keys);
 	}
 	public final void withinTxn(int retries, int delta, Runnable run){
-		txn = service.beginTransaction(TransactionOptions.Builder.withXG(true));
+		transaction = service.beginTransaction(TransactionOptions.Builder.withXG(true));
 		for(int e = 0; e < retries; e++){
 			try {
 				run.run();
