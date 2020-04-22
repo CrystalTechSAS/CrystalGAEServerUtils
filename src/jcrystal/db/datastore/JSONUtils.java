@@ -3,13 +3,13 @@
  * Proprietary and confidential
  * Written by Germán Augusto Sotelo Arévalo <gasotelo@crystaltech.co>, December 2018
  */
-package jcrystal;
+package jcrystal.db.datastore;
 
 import java.util.List;
 
 import org.json.JSONObject;
 
-public class JSONUtilsPlatform {
+public class JSONUtils {
 	public static String json(com.google.appengine.api.datastore.GeoPt a){return "["+Float.toString(a.getLatitude())+","+Float.toString(a.getLongitude())+"]";}
 	public static String json(com.google.appengine.api.datastore.Email a){return JSONObject.quote(a.getEmail());}
 	public static String jsonQuote(com.google.appengine.api.datastore.GeoPt a){return "["+Float.toString(a.getLatitude())+","+Float.toString(a.getLongitude())+"]";}
